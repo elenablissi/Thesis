@@ -12,14 +12,23 @@ import env from "dotenv";
 // Load environment variables from the .env file
 env.config();
 
-// Creating a new PostgreSQL client
-const db = new pg.Client( {
-    user: process.env.PG_USER,
-    host: process.env.PG_HOST,
-    database: process.env.PG_DATABASE,
-    password: process.env.PG_PASSWORD,
-    port: process.env.PG_PORT,
-} );
+// Creating a new PostgreSQL client using database details
+// const db = new pg.Client( {
+//     user: process.env.PG_USER,
+//     host: process.env.PG_HOST,
+//     database: process.env.PG_DATABASE,
+//     password: process.env.PG_PASSWORD,
+//     port: process.env.PG_PORT,
+// } );
+
+// Creating a new PostgreSQL client using database url
+const db = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+});
+  
 
 // Connect to the PostgreSQL database
 db.connect().catch(err => {
