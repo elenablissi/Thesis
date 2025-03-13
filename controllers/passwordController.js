@@ -14,7 +14,8 @@ import crypto from 'crypto';
 // Import nodemailer for sending emails
 import nodemailer from 'nodemailer';
 
-const URL_PATH = `${process.env.FRONTEND_URL}:${process.env.APP_PORT}`;
+// const URL_PATH = `${process.env.FRONTEND_URL}:${process.env.APP_PORT}`;
+const URL_PATH = `${process.env.FRONTEND_URL}`;
 
 
 // GET FORGOT PASS PAGE

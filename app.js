@@ -52,7 +52,7 @@ app.set('views', path.join(__dirname, 'views'));
 env.config();
 
 // Define the port to listen on
-const port = process.env.APP_PORT;
+// const port = process.env.APP_PORT;
 const url = process.env.FRONTEND_URL;
 
 // Configure session middleware
@@ -104,7 +104,7 @@ app.use((err, req, res, next) => {
 
 // Start the server and listen on the specified port
 app.listen(port, () => {
-    console.log(`App is running on port ${port}`);
-    console.log(`Accessible at: ${url}:${port}`);
+    // console.log(`App is running on port ${port}`);
+    console.log(`Accessible at: ${url}`);
 });
   
