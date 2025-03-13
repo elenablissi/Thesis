@@ -1,0 +1,95 @@
+<!--
+Admin Dashboard view
+
+@author Elena Blisi
+-->
+
+
+<!-- Include the header partial template -->
+<%- include("partials/header.ejs") %>
+
+<section id="adminBookings" class="bg-gray">
+    <!-- Main container for all upcoming bookings section -->
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border text-white  ">
+         <!-- Section heading for the admin dashboard and upcoming bookings -->
+        <div class="row text-center my-5 pt-0 mt-0 mt-lg-4">
+            <h4>Admin Dashboard</h4>
+            <h3>Upcoming Bookings</h3>
+        </div>
+        <hr>
+
+        <!-- Table displaying upcoming bookings -->
+        <div class="table-responsive">
+            <table>
+                <thead>
+                <tr>
+                    <!-- Table headers for booking details -->
+                    <th>Booking ID</th>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Location</th>
+                    <th>User</th>
+                    <th>Google Maps</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% bookings.forEach(booking => { %>
+                    <tr>
+                        <!-- Booking ID -->
+                        <td><%= booking.id %></td>
+
+                         <!-- Service Title -->
+                        <td><%= booking.service_title %></td>
+
+                        <!-- Date Formatting -->
+                        <td>
+                            <% 
+                            // Create a Date object from the booking date
+                            const date = new Date(booking.date);
+                            const day = date.getDate().toString().padStart(2, '0');
+                            const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, so add 1
+                            const year = date.getFullYear();
+                            const formattedDate = `${day}/${month}/${year}`; // Format date as DD/MM/YYYY
+                            %>
+                            <%= formattedDate %>
+                        </td>
+
+                        <!-- Time Formatting -->
+                        <td>
+                            <% 
+                            // Extract hours and minutes from the booking time
+                            const timeString = booking.time; // Format HH:mm:ss
+                            const [hours, minutes] = timeString.split(':').map(num => parseInt(num, 10));
+                            const timeDate = new Date();
+                            timeDate.setHours(hours);
+                            timeDate.setMinutes(minutes);
+                            timeDate.setSeconds(0); // Set seconds to 0
+                            const formattedTime = timeDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }); // Format time as HH:mm
+                            %>
+                            <%= formattedTime %>
+                        </td>
+
+                        <!-- Location -->
+                        <td><%= booking.location %></td>
+
+                        <!-- User Full Name -->
+                        <td><%= booking.first_name %> <%= booking.last_name %></td>
+
+                        <!-- Google Maps Link -->
+                        <td class="position-relative"><a href="<%= booking.map_url %>" class="position-absolute top-50 start-50 translate-middle" target="_blank"><img src="SVGs/link.svg" alt="Link"/></a></td>
+                    </tr>
+                <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+         <!-- Log Out Button -->
+        <div class="row">    
+            <a class="btn btn-light col-8 col-md-6 col-lg-4 col-xl-2 mx-auto my-5 py-2 fs-5" href="/logout" role="button">Log Out <img class="ps-2" src="SVGs/log-out.svg" alt="Log Out" /></a>
+        </div>
+    </div>
+</section>
+
+<!-- Include the footer partial template -->
+<%- include("partials/footer.ejs") %>

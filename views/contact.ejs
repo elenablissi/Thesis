@@ -1,0 +1,60 @@
+<!--
+Contact View
+
+@author Elena Blisi
+-->
+
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Contact Section -->
+<section id="contact" class="bg-gray">
+    <!-- Main container for the contact section -->
+    <div class="container-xxl">
+        <!-- Row for layout alignment -->
+        <div class="row">
+            <div class="col-12 d-flex flex-column justify-content-center text-center text-lg-start">
+                <!-- Conditional Display Based on Status -->
+                <% if (status == true) { %> 
+                    <!-- Success Message -->
+                    <div>
+                        <h2>Thanks for getting in touch!</h2>
+                        <h3>You will be hearing from us as soon as possible!</h3>
+                    </div>
+                <% } else if (status == false) { %>
+                    <!-- Error Message -->
+                    <div>
+                        <h2>Error Sending Email</h2>
+                        <h3>It appears there has been an error sending your email. Please try again later or give us a call.</h3>
+                    </div>
+                <% } else { %>
+                    <!-- Contact Form Heading -->
+                    <div class="col-12 d-flex flex-column justify-content-center text-center pb-3">
+                        <h2>Get In Touch</h2>
+                        <h3>Get Your <span>Free</span> Quote Today</h3>
+                    </div>
+                    <!-- Form for Contact Requests -->
+                    <form id="contact-form" class="form d-flex flex-column col-11 mx-auto" action="/contact" method="POST" onsubmit="loadLoader()">
+                        <!-- Input for Full Name -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5" id="full-name" placeholder="Full Name*" name="full_name" required>
+                        <!-- Input for Email Address -->
+                        <input type="email" class="p-2 ps-3 my-2 my-md-4 border-0 rounded-5" id="user-email" placeholder="Email*" name="email" required>
+                        <!-- Input for Phone Number -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5" id="user-phone" placeholder="Phone*" name="phone" required>
+                        <!-- Input for Subject of the Message -->
+                        <input type="text" class="p-2 ps-3 my-2 my-md-4 border-0 rounded-5" id="subject" placeholder="Subject*" name="subject" required>
+                        <!-- Textarea for Message Description -->
+                        <input type="textarea" class="p-2 ps-3 my-2 border-0 rounded-5" id="description" placeholder="Description*" name="description" required>
+                        <!-- Submit Button -->
+                        <button id="submit-btn" class="align-self-end p-2 mt-3 rounded-5 border-0" type="submit">Submit<span id="submit-icon" class="ms-2"><img src="SVGs/arrow-right.svg" alt="Arrow" /></span></button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!--Include the header templeate-->
+<%- include("partials/footer.ejs") %>

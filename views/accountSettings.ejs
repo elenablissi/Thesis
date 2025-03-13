@@ -1,0 +1,147 @@
+<!--
+Account Settings view
+
+@author Elena Blisi
+-->
+
+
+<!-- Include the header partial -->
+<%- include("partials/header.ejs") %>
+
+
+<!-- Account Settings Section -->
+<section class="form bg-gray">
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border">
+
+        <!-- Section Title -->
+        <div class="row my-5">
+            <h3 class="text-center text-white">Edit Account Details</h3>
+        </div>
+
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6 mx-auto text-white">
+                <!-- Personal Details Form -->
+                <form id="personal-details-form" action="/accountSettings?data=personal" method="POST" class="form d-flex flex-column" onsubmit="setFullPhoneNumber()">
+                    <h3 class="display-6 fw-normal">Personal Details</h3>
+                    <hr>
+
+                    <!-- Personal Information Inputs -->
+                    <div class="form-group d-flex flex-column flex-md-row">
+                        <div class="col-12 col-md-6 pe-md-2">
+                            <input type="text" class="p-2 ps-3 my-3 border-0 rounded-5 w-100" id="first-name" placeholder="First Name*" name="first_name" value="<%= userDetails.first_name %>" required disabled>
+                        </div>
+                        <div  class="col-12 col-md-6 ps-md-1">
+                            <input type="text" class="p-2 ps-3 my-3 border-0 rounded-5 w-100" id="last-name" placeholder="Last Name*" name="last_name" value="<%= userDetails.last_name %>" required disabled>
+                        </div>
+                    </div>
+
+                    <input type="email" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="user-email" placeholder="Email*" name="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" value="<%= userDetails.email %>" required disabled>
+                    <div class="form-group d-flex flex-column flex-md-row">
+
+                        <!-- Country and Phone Number Inputs -->
+                        <div class="col-12 col-md-6 pe-md-2">
+                            <!-- Dropdown for selecting country -->
+                            <select name="country" id="country" onchange="setDialCode();" class="p-2 ps-3 my-3 border-0 rounded-5 w-100" disabled>
+                                <% if (countries && countries.length > 0) { %>
+                                    <!-- Loop through available countries and create an option for each -->
+                                    <% countries.forEach(country => { %>
+                                        <option id="<%= country.country_code %>" value="<%= country.dial_code %>"><%= country.country %></option>
+                                    <% }) %>
+                                <% } else { %>
+                                    <!-- Display a message if no countries are available -->
+                                    <option disabled>No countries available</option>1
+                                <% } %>
+                            </select>  
+                        </div>
+
+                        <div class="col-12 col-md-6 ps-md-1 d-flex flex-row">
+                            <div class="col-4 pe-2">
+                                <input type="text" class="p-2 ps-3 my-3 border-0 rounded-5 w-100 text-white" id="telephone-code" name="telephone_code" value="+357" disabled>
+                            </div>
+
+                            <div class="col-8 pe-1">
+                                <input type="number" class="p-2 ps-3 my-3 border-0 rounded-5 w-100" id="user-telephone" placeholder="Phone Number" name="phone_number" disabled>
+                            </div>
+
+                             <!-- Hidden input field for combined phone number -->
+                            <input type="hidden" id="full-phone-number" name="full_phone_number">
+                            <input type="hidden" name="operation" value="0">
+                        </div>
+
+                    </div>
+
+                    <!-- Buttons for editing and submitting personal details -->
+                    <div class="d-flex flex-row">
+                        <button id="edit-details-btn" onclick="enableForm('personal-details-form', this)" class="edit-btn justify-self-end p-2 rounded-2 border-0 mt-3 w-50 me-2">Edit<img class="ps-2 pb-1" src="SVGs/edit-booking.svg" alt="Edit" /></button>
+                        <button id="done-details-btn" class="justify-self-end p-2 rounded-2 border-0 mt-3 w-50 ms-2" type="submit" disabled>Update<img class="ps-2 pb-1" src="SVGs/check-lg.svg" alt="Tick" /></button>
+                    </div>
+                </form>
+
+                <!-- Success Message for Personal Details Update -->
+                <% if (updated === "personal") { %>
+                    <!-- Display a success message if the personal details have been updated -->
+                    <p class="text-green mt-3">You have successfully updated your Personal Details!</p>
+                <% } %>
+
+                 <!-- Security Details Form -->
+                <form id="security-details-form" action="/accountSettings" method="POST" class="form d-flex flex-column mt-5" onsubmit="return matchPasswords()" <% if (userDetails.password === "google") { %> style="display: none!important;" <% } %>>
+                    <h3 class="display-6 fw-normal">Security Details</h3>
+                    <hr>
+                    <input type="password" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="old-user-password" placeholder="Old Password*" name="old_password" required disabled>
+                    <input type="password" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="user-password" placeholder="New Password*" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required disabled>
+                    <div id="password-error" class="form-error ps-2 d-none">
+                        <h5 class="text-white">Password must contain:</h5>
+                        <div class="ps-3">
+                            <p id="length" class="invalid">Minimum 8 Characters</p>
+                            <p id="letter" class="invalid">A Lowercase Letter</p>
+                            <p id="capital" class="invalid">An Uppercase Letter</p>
+                            <p id="number" class="invalid">A Number</p>
+                        </div>
+                    </div>
+                    <input type="password" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="confirm-user-password" placeholder="Confirm Password*" name="confirm_password" required disabled>
+                    <p id="confirm-password-error" class="text-danger form-error d-none">Passwords don't match!</p>
+                    <input type="hidden" name="operation" value="1">
+                    <div class="d-flex flex-row">
+                        <button id="edit-security-btn" onclick="enableForm('security-details-form', this)" class="edit-btn justify-self-end p-2 rounded-2 border-0 mt-3 w-50 me-2">Edit<img class="ps-2 pb-1" src="SVGs/edit-booking.svg" alt="Edit" /></button>
+                        <button id="done-security-btn" class="justify-self-end p-2 rounded-2 border-0 mt-3 w-50 ms-2" type="submit" disabled >Update<img class="ps-2 pb-1" src="SVGs/check-lg.svg" alt="Tick" /></button>
+                    </div>
+                </form>
+                
+                <!-- Error and Success Messages for Security Details -->
+                <% if (oldPasswordError === "1") { %>
+                    <!-- Display an error message if the old password does not match -->
+                    <p class="text-danger mt-3">Old password doesn't match!</p>
+                <% } %>
+                <% if (updated === "password") { %>
+                    <!-- Display a success message if the password has been updated -->
+                    <p class="text-green mt-3">Your password has been updated!</p>
+                <% } %>
+                <!-- Back Button -->
+                <a href="/myBookings"><button type="button" class="justify-self-start bg-light p-2 rounded-2 border-0 my-5"><img class="ps-2 pb-1 icon-rotate" src="SVGs/arrow-right.svg" alt="Arrow" />Back</button></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- JavaScript for setting default country and phone number -->
+<script>
+
+    console.log('<%=userDetails.password %>');
+    // Set Cyprus as default country for phone number
+    document.getElementById("country").value= "+357";
+
+    // Check if the phoneInput exists and has a value
+    var phone_number = '<%= userDetails.phone_number %>'
+    if (phone_number) {
+        var dialCode = phone_number.split(" ")[0];
+        document.getElementById("country").value= dialCode;
+        setPhoneNumber(phone_number);
+    }
+</script>
+
+<!-- For Password Requirements Message -->
+<script src="/passwordRequirements.js"></script>
+
+<!-- Include the footer partial -->
+<%- include("partials/footer.ejs") %>

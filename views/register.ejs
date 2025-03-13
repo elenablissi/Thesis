@@ -1,0 +1,105 @@
+<!--
+Register View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Section for user registration form -->
+<section class="form bg-gray">
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border">
+        <!-- Title row -->
+        <div class="row mt-5 mb-3">
+            <h3 class="text-center text-white">Register</h3>
+        </div>
+        <!-- Row containing the form and additional information -->
+        <div class="row">
+            <!-- Centered column for the form -->
+            <div class="col-11 col-md-8 col-lg-6 mx-auto">
+                <!-- Link to login page for existing users -->
+                <p class="text-white ps-2">If you already have an account, login <a href="/login" class="fw-bold">here</a></p>
+
+                <!-- Registration form -->
+                <form id="register-form" action="/register" method="POST" class="form d-flex flex-column mb-5" onsubmit="return validateForm('<%= emails %>')">
+                    <!-- Input fields for first and last names -->
+                    <div class="form-group d-flex flex-column flex-md-row">
+                        <div class="col-12 col-md-6 pe-md-2">
+                            <input type="text" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 w-100" id="first-name" placeholder="First Name*" name="first_name" required>
+                        </div>
+                        <div  class="col-12 col-md-6 ps-md-1">
+                            <input type="text" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 w-100" id="last-name" placeholder="Last Name*" name="last_name" required>
+                        </div>
+                    </div>
+                    <!-- Input field for email with validation message -->
+                    <input type="email" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 col-12" id="user-email" placeholder="Email*" name="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" required>
+                    <p id="email-error" class="text-danger form-error d-none">Email already in use!</p>
+                    <input type="password" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 col-12" id="user-password" placeholder="Password*" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                   
+                    <div id="password-error" class="form-error ps-2 d-none">
+                        <h5 class="text-white">Password must contain:</h5>
+                        <div class="ps-3">
+                            <p id="length" class="invalid">Minimum 8 Characters</p>
+                            <p id="letter" class="invalid">A Lowercase Letter</p>
+                            <p id="capital" class="invalid">An Uppercase Letter</p>
+                            <p id="number" class="invalid">A Number</p>
+                        </div>
+                    </div>
+                    <!-- Input fields for country and phone number -->
+                    <input type="password" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 col-12" id="confirm-user-password" placeholder="Confirm Password*" name="confirm_password" required>
+                    <p id="confirm-password-error" class="text-danger form-error d-none">Passwords don't match!</p>
+                    <div class="form-group d-flex flex-column flex-md-row">
+                        <div class="col-12 col-md-6 pe-md-2">
+                            <select name="country" id="country" onchange="setDialCode();" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 w-100">
+                                <% if (countries && countries.length > 0) { %>
+                                    <% countries.forEach(country => { %>
+                                        <option id="<%= country.country_code %>" value="<%= country.dial_code %>"><%= country.country %></option>
+                                    <% }) %>
+                                <% } else { %>
+                                    <option disabled>No countries available</option>1
+                                <% } %>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-6 ps-md-1 d-flex flex-row">
+                            <div class="col-4 pe-2">
+                                <input type="text" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 w-100 text-white" id="telephone-code" name="telephone_code" value="+357" disabled>
+                            </div>
+                            <div class="col-8 pe-1">
+                                <input type="number" class="p-2 ps-3 my-2 my-md-3 border-0 rounded-5 w-100" id="user-telephone" placeholder="Phone Number" name="phone_number">
+                            </div>
+                             <!-- Hidden input field for combined phone number -->
+                            <input type="hidden" id="full-phone-number" name="full_phone_number">
+                        </div>
+                    </div>  
+                    <!-- Submit button for the form -->
+                    <button id="login-btn" class="align-self-end p-2 rounded-2 border-0 mt-3" type="submit">Register<img class="ps-2" src="SVGs/arrow-right.svg" alt="Arrow" /></button>
+                </form>
+                <!-- Separator for alternative signup options -->
+                <div class="hr-with-text">
+                    <span class="hr-text">OR</span>
+                </div>
+                <!-- Button to sign up with Google -->
+                <div class="col-12 d-flex mb-5">
+                    <a class="btn btn-block mx-auto" href="/auth/google" role="button">
+                        <i class="fab fa-google pe-1"></i>
+                        Sign Up with Google
+                    </a>
+                </div>         
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Set Cyprus as default country for phone number
+    document.getElementById("country").value= "+357";
+</script>
+
+<!-- For Password Requirements Message -->
+<script src="/passwordRequirements.js"></script>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

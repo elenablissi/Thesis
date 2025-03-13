@@ -1,0 +1,56 @@
+<!--
+Login View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Login form section -->
+<section class="form bg-gray">
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border">
+         <!-- Title row for the login section -->
+        <div class="row mt-5 mb-3">
+            <h3 class="text-center text-white">Log in</h3>
+        </div>
+        <!-- Row containing the login form and additional information -->
+        <div class="row">
+            <div class="col-11 col-md-8 col-lg-6 mx-auto">
+                <%# Show error if user tries to book without logging in %>
+                <% if (showBookingError) { %>
+                    <p class="text-danger ps-2">In order to book an appointment, please log in.</p>
+                <% } %>
+                <p class="text-white ps-2">If you don't have an account, register <a href="/register" class="fw-bold">here</a></p>
+                <form id="login-form" action="/login" method="POST" class="form d-flex flex-column mb-5">
+                    <input type="email" class="p-2 ps-3 my-2 border-0 rounded-5" id="user-email" placeholder="Email" name="email" required>
+                    <input type="password" class="p-2 ps-3 my-2 border-0 rounded-5" id="user-password" placeholder="Password" name="password" required>
+                    <%# Show error message if user entered wrong credentials %>
+                    <% if (loginError != null) { %>
+                        <p id="login-error" class="text-danger ps-2"><%= loginError %></p>
+                    <% } %>
+                    <div class="mt-2">
+                        <a href="/forgotPass?source=login" class=" ps-2">Forgot Password?</a>
+                    </div>
+                    <button id="login-btn" class="align-self-end p-2 rounded-2 border-0"  type="submit">Log in<img class="ps-2" src="SVGs/arrow-right.svg" alt="Arrow" /></button>
+                </form>
+                <!-- Separator for alternative login options -->
+                <div class="hr-with-text"> 
+                    <span class="hr-text">OR</span>
+                </div>
+                <!-- Button to sign in with Google -->
+                <div class="col-12 d-flex mb-5">
+                    <a class="btn btn-block mx-auto" href="/auth/google" role="button">
+                        <i class="fab fa-google pe-1"></i>
+                        Sign In with Google
+                    </a>
+                </div>           
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,1160 @@
+/*
+Styling for templates
+
+@author Elena Blisi
+*/
+
+
+/*** GENERAL STYLES ***/
+
+/* Basic styles for html and body */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+
+/* Flex layout for the body to ensure content stretches */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Ensure sections take up all remaining space with padding */
+body section {
+    padding: 40px 0;
+    flex: 1; /* Take up all remaining space */
+}
+
+
+/* Styling for headings */
+h1 {
+    font-size: 75px;
+    color: white;
+    letter-spacing: 4px;
+}
+
+h2 {
+    font-size: 65px;
+    color: white;
+    letter-spacing: 2px;
+}
+
+h3 {
+    font-size: 55px;
+    color: white;
+}
+
+h4 {
+    font-size: 20px;
+    color: white;
+}
+
+
+/* Container size for responsive layout */
+.container-xxl {
+    max-width: 1000px;
+}
+
+
+/* Hide error messages by default */
+.error-message {
+    display: none;
+}
+
+
+/* Icon rotation classes */
+.icon-rotate {
+    transform: rotateY(180deg);
+}
+
+.icon-rotate-90 {
+    transform: rotateZ(-90deg) ;
+    height: 25px;
+}
+
+
+/* Background color and gradient classes */
+.bg-gray {
+    background-image: linear-gradient(to right, #7d7c7d, #292828); /* Left to right gradient */
+}
+
+.bg-dark-gray {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+.bg-blue {
+    background-image: linear-gradient(to right, #5de0e6, #004aad); /* Left to right gradient */
+}
+
+
+/* Text color classes */
+.text-green {
+    color: #28d496;
+}
+
+.text-gray {
+    color: #a6a6a6;
+}
+
+
+/* Prevent text selection */
+.no-select {
+    user-select: none; /* Standard syntax */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
+
+/* Button styles */
+button {
+    font-size: 18px;
+    color: black;
+}
+
+
+/* Blue button styles */
+.btn-blue {
+    background: #3DABD3;
+}
+
+.btn-blue:hover {
+    background: #379abe;
+    color: black;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Red button styles */
+.btn-red {
+    background: #d11a2a;
+    color: white;
+}
+
+.btn-red:hover {
+    background: #a71420;
+    color: white;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/*** LOADER ***/
+
+/* Loader animation styles */
+.loader {
+    width: 17px;
+    height: 17px;
+    border: 2.5px solid #161616;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    }
+
+/* Keyframes for rotation animation */
+@keyframes rotation {
+0% {
+    transform: rotate(0deg);
+}
+100% {
+    transform: rotate(360deg);
+}
+}
+
+
+/*** HEADER ***/
+
+/* Announcement bar styling */
+.announcement {
+    background-color: #292828;
+    color: white;
+}
+
+.announcement a{
+    text-decoration: none;
+    color: white;
+    transition: transform 0.1s ease-in-out;
+}
+
+.announcement a:hover {
+    transform: scale(1.1); /* Slightly increase the size */
+}
+
+
+/* Icon styles */
+.clock, .phone {
+    filter: invert(1) brightness(1000%) sepia(100%) saturate(1000%) hue-rotate(180deg);
+    font-size: 22px;
+    
+}
+
+#logo {
+    border: white solid 2px;
+    border-radius: 50%;
+    width: 75px;
+}
+
+
+/* Navigation item styling */
+.navigationItem {
+    position: relative;
+    text-decoration: none; /* Remove default underline */
+    color: #000; /* Default text color */
+    padding-bottom: 5px; /* Space for the underline */
+    font-size: larger;
+}
+
+
+/* Underline effect for navigation items */
+.navigationItem::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px; /* Thickness of the underline */
+    background-color: #000; /* Color of the underline */
+    transition: width 0.3s ease; /* Animation for width change */
+}
+
+.navigationItem:hover {
+    font-weight: 600;
+    color: black;
+}
+
+.navigationItem.active {
+    color: black; /* Active text color */
+    font-weight: 600;
+}
+
+#auth-section {
+    order: 1;
+}
+
+ul.navbar-nav {
+    order: 2;
+}
+
+/* Remove the outline from the burger menu button */
+.navbar-toggler:focus {
+    outline: none;
+    box-shadow: none; /* Remove any shadow that might appear on focus */
+}
+
+.login {
+    max-width: 65px;
+}
+
+.register {
+    max-width: 85px;
+}
+
+
+/*** HOME PAGE ***/
+
+/* Styling for introductory text and buttons */
+.introSub {
+    color:#d9d9d9;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.introButton {
+    background-color: #3cb7fd;
+    border: #3cb7fd solid 1px;
+    color: black;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0); /* Default no shadow */
+    transition: transform 0.3s ease; /* Smooth transition for scaling effect */
+}
+
+.introButton:hover, .introButton:focus {
+    color: black; /* Preserve text color */
+    background-color: #3cb7fd; /* Preserve background color */
+    border-color: #3cb7fd;; /* Preserve border color */
+    transform: scale(1.1); /* Scale up the button */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}
+
+
+/* Video styling for responsiveness */
+video {
+    width: 100%;
+    aspect-ratio: 0.67;
+    max-width: 350px;
+    max-height: 100%;
+}
+
+
+/* Welcome text styling */
+.welcomeText ul {
+    font-size: 23px;
+    color: white;
+}
+
+.dot {
+    margin: 10px 0;
+    width: 25px;
+    height: 25px;
+}
+
+
+/* Styling for horizontal rules */
+.bg-blue hr {
+    border: none;
+    height: 0.5px!important;
+}
+
+#gain hr {
+    height: 0.8px!important;
+}
+
+
+/* Padding for review section */
+#reviews {
+    padding: 40px 0;
+}
+
+/* Review card styling */
+.review-card {
+    text-align: left;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    max-height: 300px; /* Set the maximum height for each review card */
+    overflow: hidden;  /* Hide content that overflows the max height */
+    display: flex;
+    flex-direction: column; /* Ensure the layout is flexible for text overflow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    align-items: flex-start;
+    gap: 15px;
+}
+
+
+/* Style for review card images */
+.review-card img {
+  border-radius: 50%;
+  max-height: 80px;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
+
+/* Flexbox for review content to grow and fill space */
+.review-card .review-content {
+  flex: 1;
+}
+
+
+/* Heading style within review card */
+.review-card h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+
+/* Rating section layout */
+.review-card .rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+
+/* Font size for rating text */
+.review-card .rating span {
+  font-size: 14px;
+}
+
+
+/* Color and size for rating stars */
+.review-card .rating i {
+  color: #f39c12;
+  font-size: 16px;
+}
+
+
+/* Paragraph styling within review card */
+.review-card p {
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: #333;
+}
+
+
+/* Style for additional content in review card */
+.review-content small {
+    color: gray;
+    font-size: 14px;
+}
+
+
+/* Style for review text with ellipsis if too long */
+.review-text {
+    max-height: 75%; /* Set a maximum height for review text */
+    overflow: hidden;  /* Hide overflow text */
+    text-overflow: ellipsis; /* Add ellipsis for overflowing text */
+    display: -webkit-box;
+    line-clamp: 5;
+    -webkit-line-clamp: 5; /* Adjust to show a specific number of lines */
+    -webkit-box-orient: vertical; /* Ensure text is vertically oriented */
+}
+
+/*** REVIEW CAROUSEL STYLES ***/
+
+/* Container for carousel with responsive size */
+.carousel-container {
+    position: relative;
+    max-width: 1000px;
+    min-height: 300px;
+    margin: 0 auto;
+}
+
+
+/* Inner container for carousel items */
+.carousel-inner {
+    min-height: 100%;
+    width: 90%;
+}
+
+
+/* Padding around carousel items */
+.carousel-item {
+    padding: 0 15px;
+}
+
+
+/* Position and size for carousel navigation controls */
+.carousel-control-prev, 
+.carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5%;
+    height: 100%;
+    z-index: 1000; /* Ensures buttons are on top */
+}
+
+
+/* Style for control icons */
+.carousel-control-prev-icon, 
+.carousel-control-next-icon {
+    border-radius: 50%;
+}
+
+
+/* Position for previous control */
+.carousel-control-prev {
+    left: -3%; /* Adjust to position button outside of the container */
+}
+
+
+/* Position for next control */
+.carousel-control-next {
+    right: -3%; /* Adjust to position button outside of the container */
+}
+
+
+
+/* Styling for section titles */
+.gainTitle, .weOfferTitle, .contactUs {
+    font-size: 60px;
+    letter-spacing: 3px;
+    color: white;
+}
+
+
+/* Text styling for advantage section */
+.advntg {
+    color: white;
+    font-weight: 500;
+}
+
+.advntgTxt {
+    color: white;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+
+/* Hover effect for images in the offer section */
+#weOffer img:hover {
+    scale: 1.2;
+    transition: ease 0.3s;
+}
+
+#weOffer img:not(:hover) {
+    transition: ease 0.3s;
+}
+
+
+/* Styles for contact form */
+#contact-form button {
+    background: #28d496;
+}
+
+
+/* Background color for contact form inputs */
+#contact-form input {
+    background: rgb(108, 106, 106, 0.5);
+}
+
+
+/* Style for back-to-top button */
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+#back-to-top:hover {
+    background-color: #0967cc;
+}
+
+
+/* Styling for about section text */
+#about p {
+    font-size: 22px;
+    color: white;
+}
+
+
+/* Styling for other sections's headers */
+#contact h3, #openingHours h3 {
+    color: #d9d9d9;
+}
+
+#contact span {
+    color: #28d496;
+}
+
+
+/* Font weight for contact section button */
+#contact button {
+    font-weight: 500;
+}
+
+
+/* Transition effects for contact form inputs */
+#contact-form input {
+    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+#contact-form input:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+
+/* Transition effects for submit button */
+#submit-btn {
+    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+#submit-btn:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+}
+
+
+/* Size for book submit icon */
+.book-submit-icon {
+    width: 30px;
+}
+
+
+
+/*** SERVICES PAGE ***/
+
+/* Remove default underline from service links */
+#services-grid a {
+    text-decoration: none !important;
+}
+
+
+/* Font size for service section headings */
+#services h4 {
+    font-size: 30px;
+}
+
+
+/* Style for service links with hover effect */
+.service-link {
+    width: 80%;
+    min-width: 150px;
+    max-width: 300px;
+    aspect-ratio: 1;
+    transition: ease 0.5s;
+}
+
+.service-link:hover img {
+    scale: 1.2;
+    transition: ease 0.5s;
+}
+
+.service-link:not(:hover) img {
+    transition: ease 0.5s;
+}
+
+
+/* Style for service boxes */
+.service-box {
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+
+/* Style for detail images */
+.details-img {
+    width: 100%;
+    aspect-ratio: 1!important;
+    max-width: 300px;
+    max-height: 300px;
+}
+
+
+/* Style for benefit icons */
+.benefit img {
+    width: 40px;
+}
+
+
+/* Remove bottom margin for benefit heading and paragraph */
+.benefit h5,
+.benefit p {
+    margin-bottom: 0;
+}
+
+
+/* Maximum width for detail buttons */
+#details-container button {
+    max-width: 200px;
+}
+
+
+
+/*** OPENING HOURS PAGE STYLES ***/
+
+/* List styling for opening hours */
+#openingHours ul{
+    list-style-type: none;
+    font-size: 22px;
+    padding-left: 0%;
+    color: white;
+}
+
+
+/* Padding below each list item */
+#openingHours li {
+    padding-bottom: 8px;
+}
+
+
+
+/*** BOOK PAGE STYLES ***/
+
+/* Flexbox styling for pagination */
+.pagination {
+    display: flex;
+    align-items: center;
+}
+
+
+/* Step Container Styling */
+.step-container {
+  display: none;
+}
+
+.step-container.active {
+  display: block;
+}
+
+
+/* Pagination Styling */
+.pagination .page-item{
+    position: relative;
+    margin: 0 50px;
+}
+
+.pagination .page-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    width: 100px; /* Length of the dashed line */
+    height: 1px;
+    background-color: transparent; /* Color of the dashed line */
+    border-top: 1px dashed #ffffff;
+    transform: translateY(-50%);
+}
+
+.pagination .page-item .page-link {
+  border-radius: 50%; /* Make the pagination indicator circular */
+  box-shadow: none; /* Remove any box-shadow */
+  z-index: 1; /* Ensure the circles are on top of the dashed line */
+  color: black;
+  font-size: 20px;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #28d496; /* Color for active step */
+  border-color: #28d496;
+  box-shadow: none; /* Remove shadow from active step */
+  color: white; /* Ensure text is visible on active step */
+  cursor: default; /* Prevent hover effect on active step */
+}
+
+
+/* Horizontal Rule Styling */
+hr{
+    height: 3px; /* Adjust the thickness */
+    background-color: white; /* Set the color of the hr */
+    border: none; /* Remove the default border */
+    margin: 20px 0; 
+    opacity: 70%;
+}
+
+
+/* Next Step Button Styling */
+.next-step {
+    background-color: #28d496;
+}
+
+
+/* Custom Textarea Styling */
+.custom-textarea {
+    resize: none;
+    height: 150px;
+}
+
+/* Styling for textarea char count */
+.textarea-container {
+    position: relative;
+}
+
+/* Styling for the textarea itself */
+.custom-textarea {
+    padding-bottom: 30px; 
+    resize: none; 
+}
+
+/* Styling for the character counter */
+#charCount {
+    position: absolute;
+    bottom: 8px; /* Adjust to position correctly within the padding */
+    right: 12px; 
+    font-size: 0.85em;
+    color: #6c757d; /* Muted text color */
+    pointer-events: none; /* Makes sure the counter is not clickable */
+} 
+
+
+
+/*** MAP STYLES ***/
+#map {
+    aspect-ratio: 2!important; /* Ensure map maintains correct aspect ratio */
+    width: 100%;
+}
+
+/* BOOTSTRAP 5 CONFLICTS FIXES */
+
+.leaflet-container {
+    box-sizing: content-box !important; /* Fixes box-sizing issue */
+}
+
+.geoapify-form {
+    background: white!important; /* Ensures background color for Geoapify form */
+}
+
+.geoapify-autocomplete-items .main-part {
+    color: black!important; /* Text color for autocomplete items */
+}
+
+.leaflet-control-zoom span,
+.leaflet-control-attribution a {
+    color: black !important;
+}
+
+
+
+/* ADMIN BOOKINGS PAGE STYLES */
+
+#adminBookings table {
+    width: 100%;
+    border-collapse: separate; /* Ensure spacing is applied */
+    border-spacing: 0 10px; 
+}
+
+#adminBookings th, td {
+    padding: 10px; /* Space within cells */
+    text-align: left;
+    border-bottom: 1px solid #ccc; 
+}
+
+#adminBookings th {
+    color: white; 
+}
+
+#adminBookings tbody tr:hover {
+    background-color: #444; 
+}
+
+
+
+/*** SIGN IN WITH GOOGLE ***/
+.hr-with-text {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+}
+
+.hr-with-text::before,
+.hr-with-text::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid white;
+}
+
+.hr-with-text::before {
+    margin-right: 10px;
+}
+
+.hr-with-text::after {
+    margin-left: 10px;
+}
+
+.hr-text {
+    color: white;
+    white-space: nowrap;
+    padding: 0 10px;
+    font-weight: bold;
+}
+
+
+
+/*** FORMS STYLES ***/
+
+select {
+    color: black;
+}
+
+/* Form Container Styling */
+section.form {
+    display: flex;
+    align-items: center;
+}
+
+.form button {
+    font-size: 20px;
+    background: #3DABD3;
+    font-weight: 500;
+    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.form button:disabled {
+    opacity: 0.5;
+    color: grayscale(100%);
+}
+
+.form button:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+}
+
+.form:not(.geoapify-form) input:not(.geoapify-address-input),
+.form select{
+    color: black;
+    padding-left: 1rem !important;
+    padding-right: .5rem !important;    
+    border-radius: 2rem !important;
+    background: #a19d9d;
+    font-size: 20px;
+    transition: box-shadow 0.1s ease-in-out, transform 0.1s ease-in-out;
+}
+
+.form input:hover,
+.form select:hover,
+.form select:active {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+.form input::placeholder {
+color: #161616; 
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form a{
+    color: white;
+}
+
+.form a:hover {
+    color: #3DABD3;
+}
+
+.invalid-field::placeholder {
+    color: red;
+    opacity: 1;
+}
+
+.invalid-field {
+    border: 2px solid red !important;
+}
+
+
+/* Disabled Button SVGs */
+.form button:disabled img {
+    opacity: 0.5; 
+    filter: grayscale(100%); 
+}
+
+
+/* Disabled Input and Select Styling */
+select:disabled:hover,
+input:disabled:hover,
+button:disabled:hover {
+    box-shadow: 0 0;
+    transform: scale(1);
+}
+
+input:disabled::placeholder {
+    color: gray!important;
+}
+
+
+
+/*** PASSWORD REQUIREMENTS ***/
+
+/* Add a red text color and an "x" icon when the requirements are wrong */
+.error-code {
+    display: none;
+}
+
+.invalid {
+    color: rgb(231, 69, 69);
+}
+
+.invalid::before {
+    position: relative;
+    left: -10px;
+    top: 3px;
+    content: "close"; 
+    font-family: 'Material Icons';
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: rgb(8, 167, 8)!important;
+}
+
+.valid:before {
+    position: relative;
+    left: -10px;
+    content: "check";
+    font-family: 'Material Icons';
+}
+
+
+
+/*** FOOTER STYLES ***/
+
+.bottom {
+    background-color: #292828;
+    color: #a9a9a9;
+}
+
+.footerNav {
+    color: darkgray;
+}
+
+.instagram {
+    filter: invert(1) brightness(1000%) sepia(100%) saturate(1000%) hue-rotate(180deg);
+}
+
+.footerNav:hover {
+    color: white;
+}
+
+
+
+/*** MEDIA ***/
+
+/* XL and up */
+@media (min-width: 992px) {
+    .navigationItem:hover::after {
+        width: 100%; /* Underline grows to full width on hover */
+    }
+
+    .navigationItem.active::after {
+        width: 100%; /* Full width underline for active link */
+        background-color: black; /* Color of the underline for active link */
+        /* No transition effect needed for the active state */
+    }
+
+    #auth-section {
+        order: 3;
+    }    
+}
+
+
+/* LG and down */
+@media (max-width: 991px) {
+    .dot {
+        width: 20px;
+        height: 20px;
+    }
+
+    .offcanvas-header {
+        letter-spacing: 2px;
+    }
+    
+    .offcanvas  {
+        background-image: linear-gradient(to bottom, #7d7c7d, #292828); /* Left to right gradient */
+    }
+
+    .service-container {
+        max-width: 250px;
+    }
+
+    video {
+        width: 100%;
+        max-width: unset!important;
+        aspect-ratio: 2!important;
+        background: url("/Pictures/videoThumbnail.png");
+        background-position: center;
+        background-size: cover;
+    }
+
+    .container-xxl.rounded-4 {
+        background-color: unset!important;
+        box-shadow: 0 0 !important;
+        border: none!important;
+        border-radius: 0!important;
+    }
+}
+
+
+/* MD and down */
+@media (max-width: 768px) {
+    .carousel-inner {
+        min-height: 729px!important;
+    }
+}
+
+
+/* SM and down */
+@media (max-width: 575px) {
+    .announcement p {
+        font-size: 14px!important;
+    }
+    
+    h1 {
+        font-size: 50px;
+    }
+
+    h2 {
+        font-size: 45px;
+    }
+
+    h3 {
+        font-size: 35px;
+    }
+
+    .subtitle {
+        font-size: 18px!important;
+    }
+
+    .advntgTxt {
+        font-size: 16px;
+    }
+
+    .gainText img {
+        width: 35px;
+    }
+
+    #logo {
+        width: 65px;
+    }
+
+    #intro a {
+        font-size: 14px;
+    }
+
+    #car {
+        width: 80px;
+    }
+
+    #brush {
+        width: 40px;
+    }
+
+    #seat {
+        width: 65px;
+    }
+
+    .carousel-inner {
+        height: 783px;
+    }
+
+    .service-container {
+        max-width: 250px;
+    }
+
+    select,
+    input {
+        height: 35px!important;
+        font-size: 16px!important;
+    }
+    
+    button {
+        font-size: 16px!important;
+    }
+    
+    .details-img {
+        max-width: 250px;
+    }
+
+    #about p {
+        font-size: 18px;
+    }
+
+    #map {
+        aspect-ratio: 1.5!important;
+    }
+
+    .geoapify-leaflet-control {
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .geoapify-address-input {
+        font-size: 14px!important;
+    }
+
+    .leaflet-touch .leaflet-bar a {
+        font-size: 18px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+    }
+}

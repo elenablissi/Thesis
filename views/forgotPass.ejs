@@ -1,0 +1,46 @@
+<!--
+Forgot Password View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Forgot Password Section -->
+<section class="form bg-gray">
+    <!-- Container with additional styling -->
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border">
+        <div class="row ">
+            <!-- Centered Column for Content -->
+            <div class="col-11 col-md-8 col-lg-6 mx-auto text-white">
+            <!-- The form is submitted with no errors -->
+                <% if (status == 'OK' ) { %>
+                    <!-- Success Message: Email Sent -->
+                    <h3 class="text-center mt-5 mb-4">Email Sent!</h3>
+                    <p class="mb-5 text-center">An email has been sent to your email address with a password reset link. If you don't see it in your inbox, look in your junk/spam folder.</p>
+                <% } else { %>
+                    <!-- Reset Password Form -->
+                    <h3 class="text-center mt-5 mb-4">Forgot Password ?</h3>
+                    <form id="login-form" class="form d-flex flex-column mb-5" action="/forgot-password" method="POST" onsubmit="loadLoader()">
+                        <!-- Input for Email Address -->
+                        <input type="email" class="p-2 ps-3 my-2 border-0 rounded-5" id="user-email" placeholder="Email" name="email" required>
+                        <!-- Error Message if Status is 'error' -->
+                        <% if (status == 'error' ) { %>
+                            <p class="text-danger ps-2" id="forgot-password-error">No user registered with that email!</p>
+                        <% } %>
+                        <!-- Information Paragraph -->
+                        <p class="ps-2 text-center text-md-start mt-2">If you are registered in our database an email with the password reset link will be send to you.</p>
+                        <!-- Submit Button -->
+                        <button id="submit-btn" class="align-self-end p-2 mt-2 rounded-2 border-0" type="submit">Submit<span id="submit-icon" class="ms-2"><img src="SVGs/arrow-right.svg" alt="Arrow" /></span></button>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

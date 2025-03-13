@@ -1,0 +1,254 @@
+<!--
+Home Page View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Intro Section -->
+<section id="intro" class="bg-gray">
+    <div class="container-xxl px-4 px-lg-0">
+        <div class="row align-items-center py-3 py-md-5">
+            <!-- Text and Buttons -->
+            <div class="col-lg-6 pb-4 d-flex flex-column justify-content-center justify-content-lg-start">
+                <h1 class="fw-bold lh-1 mb-3 introTitle">Make Your Passion Stand Out</h1>
+                <h4 class="lead pb-4 introSub">Providing service in Limassol, Paphos, Larnaca <br class="d-none d-lg-block">and nearby areas</h4>
+                <div class="pb-4 row gx-3">
+                    <div class="col-6 col-lg-5 mb-2">
+                        <a href="/contact" class="w-100 btn btn-primary rounded-pill btn-lg px-4 introButton"><img src="/SVGs/telephone.svg" alt="telephone" class="me-1 mb-1">CONTACT US</a>
+                    </div>
+                    <div class="col-6 col-lg-5">
+                        <a href="/book" class="w-100 btn btn-outline-secondary rounded-pill btn-lg px-4 introButton"><img src="/SVGs/calendar.svg" alt="telephone" class="me-2 mb-1">BOOK NOW</a>
+                    </div>
+                </div>  
+            </div>
+            <!-- Video Display -->
+            <div class="col-lg-6 d-flex justify-content-center text-center">
+                <video controls class="rounded-4">
+                    <source src="/Videos/videoo.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Welcome Section -->
+<section id="welcome" class="bg-blue">
+    <div class="container-xxl px-4 px-lg-0">
+        <div class="row d-flex flex-column flex-lg-row">
+            <!-- Welcome Message -->
+            <div class="col-lg-5 d-flex flex-column justify-content-center text-center text-lg-start">
+                <h2 class="pb-1">WELCOME</h2>
+                <h4 class="subtitle">To Skyline Shine, Your Premier Choice For <br class="d-none d-md-block">Mobile Car Detailing!</h4>
+            </div>
+            <!-- Dots Decoration -->
+            <hr class="d-block d-lg-none opacity-100 mt-3">
+            <div class="col-1 flex-column justify-content-center align-items-center my-0 d-none d-lg-flex">
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+            </div>
+            <!-- Description of Services -->
+            <div class="col-lg-5 d-flex flex-column justify-content-center justify-self-lg-end text-start welcomeText">
+                <h4>Our Expert Team Brings Automotive Perfection to your Doorstep With:</h4>
+                <ul class="py-3">
+                    <li>Precision Detailing,</li>
+                    <li>Paint Correction,</li>
+                    <li>Ceramic Coating For a Lasting Shine</li>
+                </ul>
+                <h4>Schedule Now, and let Skyline Shine Transform your Car Wherever you are!</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section id="reviews" class="bg-gray">
+    <div class="container-xxl px-4 px-lg-0">
+        <div class="row justify-content-center">
+            <div class="col-12 d-flex flex-column justify-content-center text-center">
+                <h3 class="pb-5"><span class="text-gray">Preferred by Over</span> 25 Mobile Dealing Clients</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="carousel-container">
+                <div id="multi-item-carousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner mx-auto">
+                        <% 
+                        const itemsPerSlide = 3;
+                        for (let i = 0; i < reviews.length; i += itemsPerSlide) { 
+                            const reviewsSlice = reviews.slice(i, i + itemsPerSlide);
+                        %>
+                        <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+                            <div class="row">
+                                <% reviewsSlice.forEach(review => { %>
+                                <div class="col-10 col-md-4 mx-auto">
+                                    <div class="review-card mb-3">
+                                        <div class="review-header d-flex align-items-center">
+                                            <% if (review.profile_photo_url) { %>
+                                                <img src="<%= review.profile_photo_url %>" class="me-3" alt="Profile Photo">
+                                            <% } %>
+                                            <h5><%= review.author_name %></h5>
+                                        </div>
+                                        <div class="review-content">
+                                            <div class="rating">
+                                                <% for (let i = 0; i < review.rating; i++) { %>
+                                                    <i class="fa fa-star"></i>
+                                                <% } %>
+                                                <% for (let i = review.rating; i < 5; i++) { %>
+                                                    <i class="fa fa-star-o"></i>
+                                                <% } %>
+                                            </div>
+                                            <div class="review-text">
+                                                <p><%= review.text %></p>
+                                            </div>
+                                            <br class="d-none d-md-block"/>
+                                            <small><%= review.time %></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <% }); %>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#multi-item-carousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#multi-item-carousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>            
+        </div>
+    </div>
+</section>
+
+<!-- Gain section -->
+<section id="gain" class="bg-blue">
+    <div class="container">
+        <div class="row d-flex flex-column flex-lg-row">
+            <!-- Benefits Heading -->
+            <div class="col-lg-5 d-flex flex-column justify-content-center text-center text-lg-start">
+                <h2 class="pb-1">What You'll Gain</h2>
+                <h3 class="fs-1">Mobile Detaling Advantages</h3>
+            </div>
+            <hr class="d-block d-lg-none opacity-100 mt-3">
+            <!-- Decorative Dots -->
+            <div class="col-1 flex-column justify-content-center align-items-center my-0 d-none d-lg-flex">
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+                <div class="dot bg-white rounded-pill mx-2"></div>
+            </div>
+            <!-- Detailed Advantages -->
+            <div class="col-lg-5 d-flex flex-column justify-content-center text-start gainText">
+                <div class="pb-2 d-flex">
+                    <div class="d-flex me-4">
+                        <img src="SVGs/check-circle-fill.svg" width="40px" class="align-self-center justify-self-center">
+                    </div>
+                    <div>
+                        <h4 class="advntg">Comprehensive Care</h4>
+                        <p class="advntgTxt">Offers a full range of detailing services from paint correction to interior cleaning, ensuring all aspects of your vehicle are expertly maintained.</p>
+                    </div>
+                </div>
+                <div class="pt-2 d-flex">
+                    <div class="d-flex me-4">
+                        <img src="SVGs/check-circle-fill.svg" width="40px" class="align-self-center justify-self-center">
+                    </div>
+                    <div>
+                        <h4 class="advntg">Advanced Protection</h4>
+                        <p class="advntgTxt">Utilizes high-quality ceramic coatings and specialized techniques to enhance and protect your vehicle’s appearance and performance long-term.</p>
+                    </div>  
+                </div>
+            </div>
+        </div>
+        <!-- Back to Top Button -->
+        <button id="back-to-top" class="shadow" onclick="scrollToTop()"><img src="SVGs/arrow-right.svg" class="icon-rotate-90"></button>
+    </div>
+</section>
+
+<!-- We Offer Section -->
+<section id="weOffer" class="bg-gray">
+    <div class="container-xxl px-4 px-lg-0">
+        <div class="row">
+            <!-- Heading -->
+            <div class="col-12 d-flex flex-column justify-content-center pb-3 pb-md-5 text-center">
+                <h2 class="">We Offer</h2>
+            </div>
+            <!-- Service Icons -->
+            <div class="col-4 d-flex flex-column justify-content-center align-items-center text-center">
+                <img src="/SVGs/race-car.svg" width="100px" id="car">
+            </div>  
+            <div class="col-4 d-flex flex-column justify-content-center align-items-center text-center ">
+                <img src="/SVGs/brush.svg" width="50px" id="brush">
+            </div> 
+            <div class="col-4 d-flex flex-column justify-content-center align-items-center text-center">
+                <img src="/Pictures/car-seat.png" width="70px" id="seat">
+            </div>
+        </div>
+        <div class="row row-cols-3 text-center text-black ">
+            <div>
+                <h4 class="subtitle">Ceramic Coating</h4>
+            </div>
+            <div>
+                <h4 class="subtitle">Paint Correction</h4>
+            </div>
+            <div>
+                <h4 class="subtitle">Full Interior Detailing</h4>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact us section -->
+<section class="bg-blue">
+    <div class="container px-4 px-lg-0">
+        <div class="row d-flex flex-column flex-lg-row">
+            <!-- Contact Heading -->
+            <div class="col-lg-6 d-flex flex-column justify-content-center text-center mb-3 mb-lg-0">
+                <h2>CONTACT US</h2>
+            </div>
+            <div class="col-lg-6 d-flex flex-column justify-content-center text-center text-lg-start">
+                <!-- Contact Form -->
+                <form id="contact-form" class="form d-flex flex-column" action="/contact" method="POST" onsubmit="loadLoader()">
+                    <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5" id="full-name" placeholder="Full Name*" name="full_name" required>
+                    <input type="email" class="p-2 ps-3 my-2 my-md-4 border-0 rounded-5" id="user-email" placeholder="Email*" name="email" required> 
+                    <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5" id="user-phone" placeholder="Phone*" name="phone" required>
+                    <input type="text" class="p-2 ps-3 my-2 my-md-4 border-0 rounded-5" id="subject" placeholder="Subject*" name="subject" required>
+                    <input type="textarea" class="p-2 ps-3 my-2 border-0 rounded-5" id="description" placeholder="Description*" name="description" required>
+                    <button id="submit-btn" class="align-self-end align-self-lg-start p-2 mt-3 rounded-5 border-0" type="submit">Submit<span id="submit-icon" class="ms-2"><img src="SVGs/arrow-right.svg" alt="Arrow" /></span></button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Add scroll to top button when needed
+    window.onscroll = function() {
+        var backToTopButton = document.getElementById("back-to-top");
+        if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    };
+</script>
+
+
+<!-- Include the footer templeate -->
+<%- include("partials/footer.ejs") %>

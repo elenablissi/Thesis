@@ -1,0 +1,165 @@
+<!--
+Edit Booking View
+
+@author Elena Blisi
+-->
+
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Edit Booking Section -->
+<section id="editBooking" class="bg-gray">
+    <!-- Container with additional styling -->
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border text-white">
+        <!-- Row for the page title -->
+        <div class="row my-5 text-center">
+            <h3>Edit Your Booking</h3>
+        </div>
+        <div class="row">
+            <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                <!-- Row containing the booking edit form -->
+                <form action="/updateBooking" method="POST" class="form">
+                    <!-- Hidden input to store the booking ID -->
+                    <input type="hidden" name="booking_id" value="<%= booking.id %>">
+
+                    <!-- Form group for selecting a service -->
+                    <div class="form-group mb-4 mb-md-5">
+                        <label for="service" class="mb-1">Choose a service:</label><br/>
+                        <select id="service" name="service_id" class="w-100 p-1" required>
+                            <!-- Populate options from the services array -->
+                            <% services.forEach(service => { %>
+                                <option value="<%= service.id %>" <%= service.id === booking.service_id ? 'selected' : '' %>><%= service.title %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+
+                    <!-- Form group for selecting the booking date and time -->
+                    <div class="form-group row mb-4 mb-md-5">                        
+                        <div class="col-6">
+                            <label for="booking_date" class="mb-1">Booking Date:</label><br/>
+                            <input class="w-100 p-1" type="date" id="date" name="date" value="<%= booking.date %>" required>
+                        </div>
+                        <div class="col-6">
+                            <label for="booking_time" class="mb-1">Booking Time:</label><br/>
+                            <select id="time" name="time" class="p-1 pb-2 rounded-5 w-100" required>
+                                <option id="current-time" value="<%= booking.time %>" selected><%= booking.time %></option> <!-- Current booking time -->
+                                <!--Options populated via JS-->
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Group for address -->
+                    <div class="form-group">
+                        <label for="map" class="mb-1">Address:</label><br/>
+                        <!-- Map for editing the meeting point and address -->
+                        <div id="map"></div>
+                        <!-- Hidden fields to save address -->
+                        <input id="address" name="full_address" type="hidden" value="<%= booking.location %>" required>
+                        <input id="google-maps-url" name="map_url" type="hidden" value=<%- booking.map_url %> required>
+                    </div>       
+                    
+                    <!-- Group for action buttons (Update and Cancel) -->
+                    <div class="form-group my-5 col-12 d-flex flex-column flex-md-row justify-content-center">
+                        <!-- Update Booking Button -->
+                        <button type="submit" class="btn btn-blue btn-lg me-0 me-md-2 mb-2 mb-md-0">Update Booking</button>
+                        <!-- Link to cancel editing and return to bookings page -->
+                        <button href="/myBookings" class="btn btn-light btn-lg" style="background:#f8f9fa;">Cancel</button>
+                    </div>  
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Include the script for interactive map functionality -->
+<script src="/map.js"></script>
+
+<script>
+  // Unavailable dates
+    document.addEventListener('DOMContentLoaded', function () {
+        const timeSelect = document.getElementById('time');
+        const dateInput = document.getElementById('date');
+
+        // Function to fetch and update available times
+        function updateAvailableTimes(selectedDate) {
+            fetch(`/available-times?date=${selectedDate}`)
+            .then(response => response.json())
+            .then(times => {
+                // Save the current default option
+                const defaultOption = timeSelect.querySelector('option[selected]');
+
+                // Clear existing options except the default one
+                timeSelect.innerHTML = '';
+                if (defaultOption) {
+                    timeSelect.appendChild(defaultOption);
+                }
+
+                if (times.length > 0) {
+                    times.forEach(time => {
+                        const option = document.createElement('option');
+                        option.value = time;
+                        option.textContent = time;
+                        timeSelect.appendChild(option);
+                    });
+                } else {
+                    const option = document.createElement('option');
+                    option.value = '';
+                    option.textContent = 'No available times';
+                    option.disabled = true;
+                    timeSelect.appendChild(option);
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching available times:', error);
+            });
+        }
+
+        // Set the minimum date and initial available times
+        hideUnavilableDates(); // This should set min date, you might want to call it here if needed
+
+        // Initial update for the default selected date
+        if (dateInput.value) {
+            updateAvailableTimes(dateInput.value);
+        }
+
+        // Update available times on date change
+        dateInput.addEventListener('change', function () {
+            const selectedDate = dateInput.value;
+            if (selectedDate) {
+                updateAvailableTimes(selectedDate);
+            }
+        });
+    });
+
+    // Past dates unavailable
+    function hideUnavilableDates() {
+        var today = new Date().toISOString().split('T')[0];
+        document.getElementsByName("date")[0].setAttribute('min', today);
+    }
+
+    // Get booking marker position
+    var mapUrl = "<%= booking.map_url %>";
+    var position = mapUrl.split("query=")[1];
+    var posArray = position.split(",");
+    
+    // Show map centered with booking marker
+    initializeMap(posArray);
+
+    // Show booking address
+    var address = document.getElementsByClassName("geoapify-address-input")[0];
+    address.value = "<%= booking.location %>";
+
+    // Show booking marker
+    setMarker(posArray);
+
+    document.getElementById("google-maps-url").value = "<%- booking.map_url %>";
+
+    // Change the time format of current booking
+    document.getElementById("current-time").value = formatTime("<%- booking.time %>");
+    document.getElementById("current-time").innerText = formatTime("<%- booking.time %>");
+</script>
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

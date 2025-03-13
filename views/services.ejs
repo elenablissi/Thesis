@@ -1,0 +1,94 @@
+<!--
+Services View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Section for displaying services -->
+<section id="services" class="bg-gray">
+    <div class="container overflow-x-hidden">
+        <div id="services-grid" class="row justify-content-center gx-0 gy-4 mb-5">
+            <!-- Heading for the services section -->
+            <h2 class="text-center text-white mb-3 mb-md-5">Our Services</h2>
+            <!-- Check if services are available -->
+            <% if (services && services.length > 0) { %>
+                <% services.forEach(service => { %>
+                    <div id="<%= service.id %>" class="service-container col-12 col-md-4 d-flex justify-content-center">
+                        <a onclick="showServiceDetails('<%= service.id %>');" class="service-link d-flex align-items-center justify-content-center">
+                            <div class="service-box rounded-4 position-relative overflow-hidden d-flex align-items-center justify-content-center">
+                                <h4 class="text-center text-white z-1 subtitle"><%= service.short_name %></h4>
+                                <img src="Pictures/<%= service.img_name %>" class="img-fluid z-0 position-absolute" alt="Service Image" />
+                            </div>
+                        </a>
+
+                        <%# Create a template hidden details div %>
+                        <div id="details-<%= service.id %>" class="row d-flex flex-column flex-lg-row d-none text-white mt-4">
+                            <!-- Back button to return to services list -->
+                            <div class="col-12 mt-5 mb-0 mt-lg-0 mb-lg-5 order-5 order-lg-1">
+                                <button type="button" onclick="viewAllServices()" class="p-2 px-3 rounded-2 border-0 prev-step"><img class="ps-2 icon-rotate" src="SVGs/arrow-right.svg" alt="Arrow" />Back to services</button>
+                            </div>
+                            <!-- Service image for detailed view -->
+                            <div class="col-12 col-lg-6 d-flex justify-content-center align-items-center order-2 order-lg-3 mb-5 mb-lg-0">
+                                <img src="Pictures/<%= service.img_name %>" class="img-fluid details-img p-0" alt="Service Image" />
+                            </div>
+                            <!-- Service details including title, subtitle, and description -->
+                            <div class="col-12 col-lg-6 order-3 order-lg-2">
+                                <h3 id="service-title" class="mb-2"><%= service.title %></h3>
+                                <h4 id="service-subtitle fw-bold" class="mb-4 pb-2 subtitle"><%= service.subtitle %></h4>
+                                <p id="description"><%- service.description %></p>
+                            </div>
+                            <!-- Section for benefits of the service -->
+                            <div class="col-12 order-4 mt-0 mt-lg-5 pt-5">
+                                <hr/>
+                                <h2 id="service-title" class="my-5 text-center text-green">Benefits</h2>
+                                <div class="row justify-content-between gy-4">
+                                    <% benefits.forEach((row) => { %>
+                                        <%# Check if the row matches the service_id %>
+                                        <% if (row.service_id === service.id) { %> 
+                                            <%# Adjust the range according to your needs %>
+                                            <% for (let i = 1; i <= 6; i++) { %>
+                                                <%# Correctly construct the key name %>
+                                                <% const benefitKey = `benefit_${i}`; %> 
+                                                <%# Access the property value %>
+                                                <% const benefitValue = row[benefitKey]; %>
+                                                <%# Only render if the column has data %>
+                                                <% if (benefitValue != null) { %>
+                                                    <div class="benefit d-flex justify-content-between mb-2 col-12 col-md-5">
+                                                        <img class="col-1 pe-3 pe-md-2" src="/SVGs/check-circle-fill.svg" Alt="Tick"/>
+                                                        <div class="col-11">
+                                                            <%# Render the column value %>
+                                                            <%- benefitValue %>
+                                                        </div>
+                                                    </div>    
+                                                <% } %>
+                                            <% } %>
+                                        <% } %>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <!-- Message displayed if no services are available -->
+                <h2 class="text-center">Service not available</h2>
+            <% } %>
+        </div>
+        <!-- Create the container for the details div -->
+        <div id="details-container" class="row">
+        </div>
+    </div>
+</section>
+
+<script>
+    // Get the links and details sections
+    const servicesLinks = document.getElementById('services-grid');
+    const detailsContainer = document.getElementById("details-container");
+</script>
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

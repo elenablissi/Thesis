@@ -1,0 +1,96 @@
+<!--
+My Bookings View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Section displaying user's bookings -->
+<section id="myBookings" class="bg-gray">
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border">
+        <!-- Title section -->
+        <div class="row text-center my-5 text-white">
+            <h3>Hello, <%= firstName %>!</h3>
+            <h4>Your Upcoming Bookings</h4>
+        </div>
+        <!-- Check if there are any bookings -->
+        <% if (bookings.length > 0) { %>
+            <!-- Container for displaying each booking -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 justify-content-center g-3 px-2">
+                <% bookings.forEach(booking => { %>
+                    <div class="booking-container"> 
+                    <div class="booking-box rounded-4 border p-5 mb-3">
+                        <div class="text-white">
+                            <!-- Display booking details -->
+                            <strong>Service:</strong> <%= booking.service_title %><br>
+                            <strong>Date:</strong> <%= new Date(booking.date).toLocaleDateString() %><br>
+                            <strong>Time:</strong>
+                            <% 
+                                const timeString = booking.time; // Format HH:mm:ss
+                                const [hours, minutes] = timeString.split(':').map(num => parseInt(num, 10));
+                                const timeDate = new Date();
+                                timeDate.setHours(hours);
+                                timeDate.setMinutes(minutes);
+                                timeDate.setSeconds(0); // Set seconds to 0
+                                const formattedTime = timeDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                            %>
+                            <%= formattedTime %><br>
+                            <strong>Address:</strong> <%= booking.location %>
+                        </div>
+                        <div class="mt-4">
+                            <!-- Cancel booking button -->
+                            <form id="cancel-form" action="/cancelBooking" method="POST" style="display:inline;">
+                                <input type="hidden" name="booking_id" value="<%= booking.id %>">
+                                <button class="rounded-4 border-0 me-3 p-2 btn-red cancel-button" type="button">Cancel<img class="ps-2" src="SVGs/cancel-booking.svg" alt="cancel Booking" /></button>
+                            </form>
+                            <!-- Edit booking button -->
+                            <form action="/editBooking" method="GET" style="display:inline;">
+                                <input type="hidden" name="booking_id" value="<%= booking.id %>">
+                                <button class="rounded-4 border-0 p-2 btn-blue" type="submit">Edit<img class="ps-2" src="SVGs/edit-booking.svg" alt="Edit Booking" /></button>
+                            </form>
+                        </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <!-- Link to book more appointments -->
+            <p class="col-12 text-center text-white mt-2">To book more appointments, click <a class="fw-bold" href="/book">here</a></p>
+        <% } else { %>
+            <!-- Message when there are no upcoming bookings -->
+            <p class="col-12 text-center text-white">You have no upcoming bookings.<br/>To book an appointment, click <a class="fw-bold" href="/book">here</a></p>
+        <% } %>
+        <!-- Links for account settings and logout -->
+        <div class="row">  
+            <div class="col-8 col-md-6 col-lg-4 mx-auto d-flex flex-row justify-content-center">
+                <a class="btn btn-light col-2 my-5 me-2 py-2 fs-5 justify-self-end" href="/accountSettings" role="button"><img class="" src="SVGs/settings.svg" alt="Settings" /></a>
+                <a class="btn btn-light col-8 my-5 py-2 fs-5" href="/logout" role="button">Log Out <img class="ps-2" src="SVGs/log-out.svg" alt="Log Out" /></a>
+            </div>  
+        </div>
+    </div>
+</section>
+
+<script>
+    // Add event listeners to cancel buttons
+    document.addEventListener('DOMContentLoaded', function () {
+      const cancelButtons = document.querySelectorAll('.cancel-button');
+  
+      cancelButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const userConfirmed = confirm("Are you sure you want to cancel this booking?");
+          
+          if (userConfirmed) {
+            // If the user confirms, submit the form programmatically
+            const form = this.closest('form');
+            form.submit();
+          }
+        });
+      });
+    });
+  </script>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

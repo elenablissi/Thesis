@@ -1,0 +1,64 @@
+<!--
+Reset Password View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<!-- Section for password reset functionality -->
+<section class="form bg-gray">
+    <div class="container-xxl bg-dark-gray shadow rounded-4 border text-white">
+        <div class="row">            
+            <div class="col-11 col-md-8 col-lg-6 mx-auto">
+                <!-- Check if the token is valid -->
+                <% if(valid) { %>
+                    <!-- Check if the form has not been submitted yet -->
+                    <% if (!submitted) { %>
+                        <!-- Password reset form -->
+                        <h3 class="text-center my-5 display-6 fw-normal">Password Reset</h3>
+                        <form id="login-form" class="form d-flex flex-column mb-5" action="/reset-password/<%= token %>" method="POST" onsubmit="return matchPasswords()">
+                            <!-- Input field for new password -->
+                            <input type="password" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="user-password" placeholder="Password*" name="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" required>
+                            
+                            <!-- Error message for password requirements -->
+                            <div id="password-error" class="form-error ps-2 d-none">
+                                <h5 class="text-white">Password must contain:</h5>
+                                <div class="ps-3">
+                                    <p id="length" class="invalid">Minimum 8 Characters</p>
+                                    <p id="letter" class="invalid">A Lowercase Letter</p>
+                                    <p id="capital" class="invalid">An Uppercase Letter</p>
+                                    <p id="number" class="invalid">A Number</p>
+                                </div>
+                            </div>
+
+                            <!-- Input field for confirming new password -->
+                            <input type="password" class="p-2 ps-3 my-3 border-0 rounded-5 col-12" id="confirm-user-password" placeholder="Confirm Password*" name="confirm_password" required>
+                            <!-- Error message for password confirmation -->
+                            <p id="confirm-password-error" class="text-danger form-error d-none">Passwords don't match!</p>
+                            <!-- Submit button for the form -->
+                            <button id="login-btn" class="align-self-end p-2 mt-2 rounded-2 border-0"  type="submit">Submit<img class="ps-2" src="/SVGs/arrow-right.svg" alt="Arrow" /></button>
+                        </form>
+                    <% } else { %>
+                         <!-- Message displayed after password is successfully changed -->
+                        <h3 class="text-center my-5 display-6 fw-normal">Password Changed!</h3>
+                        <p class="mb-5 text-center">You have successfully reset your account password. Login <a href="/login" class="fw-bold">here</a>.</p>
+                    <% } %>  
+                <% } else { %> 
+                    <!-- Message for invalid or expired reset link -->
+                    <h3 class="text-center my-5 display-6 fw-normal">Password reset link is <span class="text-danger">invalid</span> or has <span class="text-danger">expired<span></h3>
+                    <p class="mb-5 text-center">The link expires after 15 minutes. If you still want to reset your password click <a href="/forgotPass?source=login" class="fw-bold">here</a>.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- For Password Requirements Message -->
+<script src="/passwordRequirements.js"></script>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>

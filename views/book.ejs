@@ -1,0 +1,300 @@
+<!--
+Appointment Booking View
+
+@author Elena Blisi
+-->
+
+
+<!--Include the header templeate-->
+<%- include("partials/header.ejs") %>
+
+<section id="book" class="bg-gray">
+    <div class="container-xxl text-white">
+        <!-- Check If the user made a successfull booking -->
+        <% if (bookSucccess == true) { %>
+            <section id="confirmation">
+                <div class="container bg-dark-gray shadow rounded-4 border">
+                    <div class="row p-5">
+                        <div class="col-12 col-md-8 mx-auto">
+                            <!-- Display a success message with a confirmation icon -->
+                            <h3 class="display-6 fw-normal"><img src="SVGs/calendar-check.svg" class="pb-1 book-submit-icon" alt="Success"/> Appointment Confirmed!</h3>
+                            <p class="my-4">Thank you for booking your appointment.</p>
+                             <!-- Provide links for booking another appointment or viewing existing bookings -->
+                            <a href="/book">Book another appointment</a>
+                            <br>
+                            <a href="/myBookings">View My Bookings</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        <!-- Check if there was an error with the booking -->
+        <% } else if (bookSucccess == false) { %>
+            <section id="confirmation">
+                <div class="container bg-dark-gray shadow rounded-4 border">
+                    <div class="row p-5">
+                        <div class="col-12 col-md-8 mx-auto">
+                            <!-- Display an error message with an error icon -->
+                            <h3 class="display-6 fw-normal"><img src="SVGs/error.svg" class="pb-1 book-submit-icon" alt="Error"/> Appointment Error!</h3>
+                            <p class="my-4">There has been an error with your appointment. Please send us an email to check your booking or navigate to your bookings and check.</p>
+                             <!-- Provide links for booking another appointment or viewing existing bookings -->
+                            <a href="/book">Book another appointment</a>
+                            <br/>
+                            <a href="/myBookings">View My Bookings</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        <!-- If the user wants to book -->
+        <% } else {%>
+        <div class="row text-center">
+            <h3 class="mb-5">Book an Appointment</h3>
+            <!--Pagination Indicator-->
+            <nav aria-label="Booking Steps">
+                <ul class="pagination pagination-lg justify-content-center">
+                    <!-- Step 1 indicator -->
+                    <li class="page-item active mx-4 mx-lg-5" aria-current="step" data-step="1"><a class="page-link no-select">1</a></li>
+                    <!-- Step 2 indicator -->
+                    <li class="page-item mx-4 mx-lg-5" data-step="2"><a class="page-link no-select">2</a></li>
+                    <!-- Step 3 indicator -->
+                    <li class="page-item mx-4 mx-lg-5" data-step="3"><a class="page-link no-select">3</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Multi-step form -->
+        <form id="booking-form" action="/book" method="POST" class="d-flex flex-column col-11 col-md-10 col-lg-8 mx-auto" onsubmit="return addressValidation()">
+            <!--Step 1: Personal Info-->
+            <div class="step-container active mt-5" id="step-1">
+                <h3 class="display-6 fw-normal">Personal Details</h3>
+                <hr>
+                <div class="form-group d-flex flex-column flex-md-row">
+                    <div class="col-12 col-md-6 pe-md-2">
+                        <!-- Input for first name -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="first-name" placeholder="First Name*" name="first_name" value="<%= user.first_name%>" required>
+                    </div>
+                    <div class="col-12 col-md-6 ps-md-1">
+                        <!-- Input for last name -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="last-name" placeholder="Last Name*" name="last_name" value="<%= user.last_name%>" required>
+                    </div>
+                </div>
+                <div class="form-group d-flex flex-column flex-md-row">
+                    <div class="col-12 col-md-6 pe-md-2">
+                        <!-- Dropdown for country selection -->
+                        <select name="country" id="country" onchange="setDialCode();" class="p-2 ps-3 my-2 border-0 rounded-5 w-100">
+                            <% if (countries && countries.length > 0) { %>
+                                <% countries.forEach(country => { %>
+                                    <option id="<%= country.country_code %>" value="<%= country.dial_code %>"><%= country.country %></option>
+                                <% }) %>
+                            <% } else { %>
+                                <option disabled>No countries available</option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6 ps-md-1 d-flex flex-row">
+                        <div class="col-4 pe-2">
+                            <!-- Display the telephone code -->
+                            <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100 text-white" id="telephone-code" name="telephone-code" value="+357" disabled>
+                        </div>
+                        <div class="col-8 pe-1">
+                            <!-- Input for phone number -->
+                            <input type="number" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="user-telephone" placeholder="Phone Number*" name="phone_number" required>
+                        </div>
+                         <!-- Hidden input field for combined phone number -->
+                         <input type="hidden" id="full-phone-number" name="full_phone_number">
+                    </div>
+                </div>  
+                <div class="form-group">
+                    <!-- Input for email address -->
+                    <input type="email" class="p-2 ps-3 my-2 border-0 rounded-5 col-12" id="user-email" placeholder="Email*" name="email" value="<%= user.email%>" required>
+                </div>
+                <div class="form-group position-relative mb-5">
+                    <!-- Button to move to the next step -->
+                    <button id="next-1" type="button" class="p-2 px-3 my-3 rounded-5 border-0 next-step position-absolute end-0">Next<img class="ps-2" src="SVGs/arrow-right.svg" alt="Arrow" /></button>
+                </div>   
+            </div>
+
+            <!--Step 2: Vehicle/Service Details-->
+            <div class="step-container mt-5" id="step-2">
+                <h3 class="display-6 fw-normal">Vehicle Information</h3>
+                <hr>
+                <div class="form-group d-flex flex-column flex-md-row">
+                    <div class="col-12 col-md-6 pe-md-2">
+                        <!-- Input for vehicle manufacturer -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="vehicle-manu" placeholder="Vehicle Manufacturer*" name="make" required>
+                    </div>
+                    <div class="col-12 col-md-6 ps-md-1">
+                        <!-- Input for vehicle model -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="vehicle-model" placeholder="Vehicle Model*" name="model" required>
+                    </div>
+                </div>
+                <div class="form-group d-flex flex-column flex-md-row">
+                    <div class="col-12 col-md-6 pe-md-2">
+                        <!-- Input for vehicle year -->
+                        <input type="number" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="vehicle-year" placeholder="Vehicle Year*" name="year" required>
+                    </div>
+                    <div class="col-12 col-md-6 ps-md-1">
+                        <!-- Input for number plate -->
+                        <input type="text" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" id="num-plates" placeholder="Number Plate*" name="num_plate" required>
+                    </div>
+                </div>
+                <h3 class="mt-5 display-6 fw-normal">Select Your Service</h3>
+                <hr>
+                <div class="form-group mb-3">
+                    <label for="service" class="fw-bold">Choose a service:</label><br/>
+                    <!-- Dropdown for selecting a service -->
+                    <select id="service" name="service_id" class="p-0 p-md-2 ps-3 my-2 border-0 rounded-5 w-100" required>
+                        <option value="" disabled selected>Please select a Service*</option>
+                        <% if (services && services.length > 0) { %>
+                            <!-- Loop through each 'service' in the 'services' array -->
+                            <% services.forEach(service => { %>
+                                <!-- Create an option for each service, using the service ID as the value and the service title as the display text -->
+                                <option value="<%= service.id %>"><%= service.title %></option>
+                            <% }) %>
+                        <!-- If the 'services' array is empty or not defined -->
+                        <% } else { %>
+                            <!-- Provide a disabled option to indicate that no services are available -->
+                            <option disabled>No services available</option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="form-group position-relative">
+                    <label for="extra" class="fw-bold">Anything else you would like us to know?</label>
+                    <div class="textarea-container position-relative">
+                        <!-- Textarea for additional information -->
+                        <textarea id="extra" class="form-control p-2 ps-3 my-2 border-0 rounded-5 w-100 custom-textarea" name="extra" maxlength="250"></textarea>
+                        <!-- Character count indicator -->
+                        <span id="charCount" class="form-text text-muted">0/250</span>
+                    </div>
+                </div>
+                <div class="form-group position-relative">
+                    <!-- Button to go back to the previous step -->
+                    <button type="button" class="p-2 px-3 my-3 rounded-5 border-0 prev-step"><img class="ps-2 icon-rotate" src="SVGs/arrow-right.svg" alt="Arrow" />Back</button>
+                    <!-- Button to move to the next step -->
+                    <button id="next-" type="button" class="p-2 px-3 my-3 rounded-5 border-0 next-step position-absolute end-0">Next<img class="ps-2" src="SVGs/arrow-right.svg" alt="Arrow" /></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Meeting Place-Date/Time -->
+            <div class="step-container mt-5" id="step-3">
+                <h3 class="display-6 fw-normal">Meeting Point</h3>
+                <hr>
+                <div class="form-group d-flex flex-column flex-md-row">
+                    <div class="mb-0 mb-md-3 col-12 pe-0 pe-md-1">
+                        <h4 class="mb-3">Where should we meet?</h4>
+                        <!-- Map for selecting the meeting point -->
+                        <div id="map"></div>
+                        <!-- Error message for missing address -->
+                        <p id="address-error-code" class="mt-2 text-danger error-code">Please add your street name on the searchbar and add a pin to your house.</p>
+                        <!-- Hidden fields to save address -->
+                        <input id="google-maps-url" name="map_url" type="hidden" required>
+                        <input id="address" name="full_address" type="hidden" required>
+                    </div>
+                </div>
+                <h3 class="mt-5 display-6 fw-normal">Date/Time</h3>
+                <hr>
+                <h4>Select the day that suits you!</h4>
+                <div class="form-group d-flex flex-row mb-3">
+                    <div class="col-6 pe-md-2">
+                         <!-- Input for choosing a date -->
+                        <label for="date" class="fw-bold">Choose a date:</label><br/>
+                        <input type="date" id="date" name="date" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" required>
+                    </div>
+                    <div class="col-6 ps-md-1">
+                        <!-- Dropdown for choosing a time -->
+                        <label for="time" class="fw-bold">Choose a time:</label><br/>
+                        <select id="time" name="time" class="p-2 ps-3 my-2 border-0 rounded-5 w-100" required>
+                        <!--Options populated via JS-->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group position-relative">
+                    <!-- Button to go back to the previous step -->
+                    <button type="button" class="p-2 px-3 my-3 rounded-5 border-0 prev-step"><img class="ps-2 icon-rotate" src="SVGs/arrow-right.svg" alt="Arrow" />Back</button>
+                    <!-- Button to submit the form -->
+                    <button id="step-3" type="submit" class="p-2 px-3 my-3 rounded-5 border-0 position-absolute end-0 btn btn-success">Submit</button>
+                </div>
+            </div>
+        </form>
+        <% } %> 
+    </div>
+</section>
+
+<!-- Include the script for interactive map functionality -->
+<script src="/map.js"></script>
+
+<script>
+
+    // Check if the form needs to be displayed
+    if ('<%= bookSucccess %>' === null || '<%= bookSucccess %>' === "") {
+        // Set Cyprus as default country for phone number
+        document.getElementById("country").value= "+357";
+
+        //Default value for phone number if available
+        setPhoneNumber("<%= user.phone_number%>");
+             
+        //Text area char limit indicator
+        document.addEventListener("DOMContentLoaded", function() {
+            const textarea = document.getElementById("extra");
+            const charCount = document.getElementById("charCount");
+
+            textarea.addEventListener("input", function() {
+                const currentLength = textarea.value.length;
+                charCount.textContent = `${currentLength}/250`;
+            });
+        });
+        
+        // Past dates unavailable
+        hideUnavilableDates();
+
+        // Update available times based on the selected date
+        document.addEventListener('DOMContentLoaded', function () {
+            const timeSelect = document.getElementById('time');
+            const dateInput = document.getElementById('date');
+
+            dateInput.addEventListener('change', function () {
+                const selectedDate = dateInput.value;
+
+                if (selectedDate) {
+                    fetch(`/available-times?date=${selectedDate}`)
+                    .then(response => response.json())
+                    .then(times => {
+                        // Clear existing options
+                        timeSelect.innerHTML = '';
+
+                        if (times.length > 0) {
+                        // Populate available times
+                        times.forEach(time => {
+                            const option = document.createElement('option');
+                            option.value = time;
+                            option.textContent = time;
+                            timeSelect.appendChild(option);
+                        });
+                        } else {
+                        // Handle the case where no times are available
+                        const option = document.createElement('option');
+                        option.value = '';
+                        option.textContent = 'No available times';
+                        option.disabled = true;
+                        timeSelect.appendChild(option);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching available times:', error);
+                    });
+                }
+            });
+        });
+
+        // Initialize form pagination functionality
+        $(document).ready(function() {
+            formPagination();
+        });
+    }
+
+  </script>
+
+
+<!--Include the footer templeate-->
+<%- include("partials/footer.ejs") %>
