@@ -18,7 +18,6 @@ import bcrypt from 'bcrypt';
 import db from './config/database.js';
 
 // Define the port for google OAuth callback URL
-const port = process.env.APP_PORT;
 const url = process.env.FRONTEND_URL;
 
 // Configure the local strategy for Passport
@@ -61,7 +60,7 @@ passport.use(new Strategy({
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: `${url}:${port}/auth/google/myBookings`,
+    callbackURL: `${url}/auth/google/myBookings`,
     passReqToCallback: true
   },
   async (request, accessToken, refreshToken, profile, done) => {
