@@ -22,7 +22,7 @@ env.config();
 // } );
 
 // Creating a new PostgreSQL client using database url
-const db = new Client({
+const db = new pg.Client({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
